@@ -1,0 +1,20 @@
+{
+  "name": "js-memcache",
+  "version": "1.0.0",
+  "description": "Store data in memory for better performance by saving on network requests.",
+  "main": "index.js",
+  "repository": "https://github.com/jabranr/js-memcache",
+  "scripts": {
+    "test": "node_modules/.bin/ava"
+  },
+  "keywords": [
+    "JavaScript",
+    "Cache",
+    "Caching"
+  ],
+  "author": "Jabran Rafique <hello@jabran.me>",
+  "license": "MIT",
+  "devDependencies": {
+    "ava": "^0.17.0"
+  }
+}
