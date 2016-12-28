@@ -22,7 +22,7 @@ $ bower install js-memcache --save-dev
 ```html
 <script src="path/to/JSMemcache.js"></script>
 <script>
-  var jsMemcache = new JSMemcache(); // available via window.JSMemcache
+  const jsMemcache = new JSMemcache(); // available via window.JSMemcache
   ...
 </script>
 ```
@@ -31,8 +31,8 @@ $ bower install js-memcache --save-dev
 `JSMemcache` can be setup in node as following i.e.
 
 ```javascript
-var JSMemcache = require('JSMemcache');
-var jsMemcache = new JSMemcache();
+const JSMemcache = require('JSMemcache');
+const jsMemcache = new JSMemcache();
 ...
 ```
 
@@ -41,7 +41,7 @@ var jsMemcache = new JSMemcache();
 
 ```javascript
 require(['path/to/JSMemcache'], function(JSMemcache) {
-  var jsMemcache = new JSMemcache();
+  const jsMemcache = new JSMemcache();
   ...
 });
 ```
