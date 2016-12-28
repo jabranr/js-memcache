@@ -1,6 +1,6 @@
 # JSMemcache [![Build Status](https://travis-ci.org/jabranr/js-memcache.svg?branch=master)](https://travis-ci.org/jabranr/js-memcache) [![npm version](https://img.shields.io/npm/v/js-memcache.svg)](https://www.npmjs.com/package/js-memcache)
 
-Store data in memory for better performance by saving on network requests. (590 bytes &ndash; minified and gzipped)
+Store data in memory for better performance by saving on network requests. (~600 bytes &ndash; minified and gzipped)
 
 # Installation
 
