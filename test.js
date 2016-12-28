@@ -1,7 +1,7 @@
 import test from 'ava';
 import JSMemcache from './index';
 
-var cache = null; // = new JSMemcache();
+let cache = null;
 
 test.beforeEach('setUp', t => {
   cache = new JSMemcache();
@@ -67,7 +67,7 @@ test('get data from cache by key failure', t => {
 });
 
 test('update data in cache success', t => {
-  var update = cache.update('find', 'that');
+  let update = cache.update('find', 'that');
   t.true(update instanceof JSMemcache);
   t.is(cache.get('find'), 'that');
   t.is(cache.getSize(), 3);
@@ -80,7 +80,7 @@ test('update data in cache throws', t => {
 });
 
 test('remove data in cache success', t => {
-  var remove = cache.remove('find');
+  let remove = cache.remove('find');
   t.true(remove instanceof JSMemcache);
   t.false(cache.get('find'));
   t.is(cache.getSize(), 2);
@@ -93,14 +93,14 @@ test('remove data in cache throws', t => {
 });
 
 test('all data in cache', t => {
-  var all = cache.all();
+  let all = cache.all();
   t.is(typeof all, 'object');
   t.true(all.hasOwnProperty('FOO|BAR'));
   t.true(all.hasOwnProperty('THISKEY'));
 });
 
 test('get keys for data in cache', t => {
-  var keys = cache.keys();
+  let keys = cache.keys();
   t.is(Object.prototype.toString.call(keys).toLowerCase(), '[object array]');
   t.true(keys.indexOf('FOO|BAR') !== -1);
   t.true(keys.indexOf('THISKEY') !== -1);
