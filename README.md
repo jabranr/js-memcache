@@ -98,6 +98,8 @@ If you find an issue or wish to suggest any improvements then use the [issue tra
 
 Contribution is most welcome. To cotribute, fork the repository and branch out from `master` for your changes. Make sure you update/add tests. This repository uses the fantastic and super easy-to-use testing framework [AVA](https://github.com/avajs/ava). Once ready [open a pull request](https://github.com/jabranr/js-memcache/compare).
 
+![https://github.com/jabranr/js-memcache](https://cloud.githubusercontent.com/assets/2131246/21534079/c24ba51a-cd59-11e6-8620-40904de19343.png)
+
 # License
 MIT License
 &copy; 2016 &ndash; Jabran Rafique
