@@ -162,7 +162,7 @@
       key = _getKey(key);
 
       if (_has(key)) {
-        delete _cache[key];
+        slice _cache[key];
         _size--;
         return this;
       }
