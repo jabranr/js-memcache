@@ -8,260 +8,133 @@
  * @license MIT
  */
 
-(root => {
-  "use strict";
+let _cache = {};
+let _limit = 100;
+let _separator = '+';
+let _isOverLimit = false;
+let _size = 0;
 
-  /**
-   * @var {object}
-   */
-  let _cache = {};
+class JSMemcache {
+  constructor() {
+    return this;
+  }
 
-  /**
-   * @var {int}
-   */
-  let _limit = 100;
+  setLimit(limit) {
+    _limit = limit;
+    return this;
+  }
 
-  /**
-   * @var {string}
-   */
-  let _separator = '+';
+  setSeparator(separator) {
+    _separator = separator;
+    return this;
+  }
 
-  /**
-   * @var {boolean}
-   */
-  let _isOverLimit = false;
+  getLimit() {
+    return _limit;
+  }
 
-  /**
-   * @var {int}
-   */
-  let _size = 0;
+  getSeparator() {
+    return _separator;
+  }
 
-  class JSMemcache {
-    constructor() {
-      return this;
-    }
+  getSize() {
+    return _size;
+  }
 
-    /**
-     * Set limit value
-     *
-     * @param {int} limit
-     * @return {self}
-     */
-    setLimit(limit) {
-      _limit = limit;
-      return this;
-    }
-
-    /**
-     * Set separator value
-     *
-     * @param {string} separator
-     * @return {self}
-     */
-    setSeparator(separator) {
-      _separator = separator;
-      return this;
-    }
-
-    /**
-     * Get limit value
-     *
-     * @return {int}
-     */
-    getLimit() {
-      return _limit;
-    }
-
-    /**
-     * Get separator value
-     *
-     * @return {string}
-     */
-    getSeparator() {
-      return _separator;
-    }
-
-    /**
-     * Get cache size
-     *
-     * @return {int}
-     */
-    getSize() {
-      return _size;
-    }
-
-    /**
-     * Set data to cache
-     *
-     * @param {array|string} key
-     * @param {mixed} val
-     * @return {void}
-     */
-    add(key, val) {
-      key = _getKey(key);
-
-      /**
-       * Memory management
-       */
-      _isOverLimit = this.getSize() >= this.getLimit() && !_isOverLimit;
-
-      if (_isOverLimit) {
-        this.remove(this.keys()[0]);
-      }
-
-      if (!this.get(key)) {
-        _cache[key] = val;
-        _size++;
-      }
-    }
-
-    /**
-     * Get data from cache
-     *
-     * @param {array|string} key
-     * @return {object|boolean}
-     */
-    get(key) {
-      key = _getKey(key);
-
-      if (!_has(key)) {
-        return false;
-      }
-
-      return _cache[key];
-    }
-
-    /**
-     * Update data in cache
-     *
-     * @param {array|string} key
-     * @param {mixed} newValue
-     * @throws {ReferenceError}
-     * @return {self}
-     */
-    update(key, newValue) {
-      key = _getKey(key);
-
-      if (_has(key)) {
-        _cache[key] = newValue;
-        return this;
-      }
-
-      throw new ReferenceError('No data found in cache for this query.');
-    }
-
-    /**
-     * Remove data in cache
-     *
-     * @param {array|string} key
-     * @param {mixed} newValue
-     * @throws {ReferenceError}
-     * @return {self}
-     */
-    remove(key) {
-      key = _getKey(key);
-
-      if (_has(key)) {
-        delete _cache[key];
-        _size--;
-        return this;
-      }
-
-      throw new ReferenceError('No data found in cache for this query.');
-    }
-
-    /**
-     * Get all data in cache
-     *
-     * @return {object}
-     */
-    all() {
-      return _cache;
-    }
-
-    /**
-     * Get all keys in cache
-     *
-     * @return {array}
-     */
-    keys() {
-      return Object.keys(_cache);
-    }
-
-    /**
-     * Clear all data in cache
-     *
-     * @return {void}
-     */
-    clear() {
-      _cache = {};
-      _size = 0;
-      _isOverLimit = false;
-    }
-  };
-
-  /**
-   * Check if a key exists
-   *
-   * @scope {private}
-   * @param {array|string} key
-   * @return {boolean}
-   */
-  const _has = (key) => {
+  add(key, val) {
     key = _getKey(key);
-    return _cache.hasOwnProperty(key);
-  }
 
-  /**
-   * Make a new caching key
-   *
-   * @scope {private}
-   * @param {array|string} keys
-   * @throws {Error}
-   * @return {string}
-   */
-  const _getKey = (keys) => {
-    if (_is(keys, 'string')) {
-      return keys.toUpperCase();
+    /**
+     * Memory management
+     */
+    _isOverLimit = this.getSize() >= this.getLimit() && !_isOverLimit;
+
+    if (_isOverLimit) {
+      this.remove(this.keys()[0]);
     }
 
-    if (!_is(keys, 'array')) {
-      throw new TypeError('Key must be an Array or String type.');
+    if (!this.get(key)) {
+      _cache[key] = val;
+      _size++;
+    }
+  }
+
+  get(key) {
+    key = _getKey(key);
+
+    if (!_has(key)) {
+      return false;
     }
 
-    return keys.join(_separator).replace(/\s/gi, _separator).toUpperCase();
+    return _cache[key];
   }
 
-  /**
-   * Check for object type
-   *
-   * @scope {private}
-   * @param {object} obj
-   * @param {string} expected
-   * @return {boolean}
-   */
-  const _is = (obj, expected) => {
-    let expectedLowerCase = expected.toLowerCase();
-    let expectedType = `[object ${expectedLowerCase}]`;
+  update(key, newValue) {
+    key = _getKey(key);
 
-    return Object.prototype.toString.call(obj).toLowerCase() === expectedType;
+    if (_has(key)) {
+      _cache[key] = newValue;
+      return this;
+    }
+
+    throw new ReferenceError('No data found in cache for this query.');
   }
 
-  /**
-   * Add methods aliases
-   */
-  JSMemcache.prototype.set = JSMemcache.prototype.add;
-  JSMemcache.prototype.replace = JSMemcache.prototype.update;
+  remove(key) {
+    key = _getKey(key);
 
-  /**
-   * Export to the world
-   */
-  if (typeof define === 'function') {
-    define('JSMemcache', [], JSMemcache);
-  } else if (typeof module === 'object' && module.exports) {
-    module.exports = JSMemcache;
-  } else {
-    root.JSMemcache = JSMemcache;
+    if (_has(key)) {
+      delete _cache[key];
+      _size--;
+      return this;
+    }
+
+    throw new ReferenceError('No data found in cache for this query.');
   }
 
-})(this);
+  all() {
+    return _cache;
+  }
+
+  keys() {
+    return Object.keys(_cache);
+  }
+
+  clear() {
+    _cache = {};
+    _size = 0;
+    _isOverLimit = false;
+  }
+}
+
+const _has = (key) => {
+  key = _getKey(key);
+  return _cache.hasOwnProperty(key);
+};
+
+const _getKey = (keys) => {
+  if (_is(keys, 'string')) {
+    return keys.toUpperCase();
+  }
+
+  if (!_is(keys, 'array')) {
+    throw new TypeError('Key must be an Array or String type.');
+  }
+
+  return keys.join(_separator).replace(/\s/gi, _separator).toUpperCase();
+};
+
+const _is = (obj, expected) => {
+  let expectedLowerCase = expected.toLowerCase();
+  let expectedType = `[object ${expectedLowerCase}]`;
+
+  return Object.prototype.toString.call(obj).toLowerCase() === expectedType;
+};
+
+/**
+ * Add methods aliases
+ */
+JSMemcache.prototype.set = JSMemcache.prototype.add;
+JSMemcache.prototype.replace = JSMemcache.prototype.update;
+
+export default JSMemcache;
