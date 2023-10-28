@@ -28,25 +28,25 @@ declare class JSMemcache {
   /**
    * Set data to cache
    */
-  add(key: string, val: unknown): void;
+  add(key: string | string[], val: unknown): void;
 
   /**
    * Get data from cache
    */
-  get(key: string): unknown | boolean;
+  get(key: string | string[]): unknown | boolean;
 
   /**
    * Update data in cache
    */
   update(
-    key: string,
+    key: string | string[],
     newValue: unknown
   ): (Window & typeof globalThis) | ReferenceError;
 
   /**
    * Remove data in cache
    */
-  remove(key: string): (Window & typeof globalThis) | ReferenceError;
+  remove(key: string | string[]): (Window & typeof globalThis) | ReferenceError;
 
   /**
    * Get all data in cache
